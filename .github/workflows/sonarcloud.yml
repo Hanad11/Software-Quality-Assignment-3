@@ -38,6 +38,7 @@ jobs:
       # The job is still marked as failed when tests fail.
       - name: SonarQube Cloud scan
         if: ${{ !cancelled() }}
-        uses: SonarSource/sonarqube-scan-action@v6
+        # Pinned to the full commit SHA of the v6.0.0 release so the tag cannot be moved
+        uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602 # v6.0.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
