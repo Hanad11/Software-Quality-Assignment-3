@@ -16,6 +16,11 @@ csrf = CSRFProtect()
 csrf.init_app(app)
 
 
+def debug_enabled():
+    """Return True only when FLASK_DEBUG=1 is set, so debug mode is never on by default."""
+    return os.environ.get("FLASK_DEBUG") == "1"
+
+
 # Home route
 @app.route("/")
 def main():
@@ -37,4 +42,4 @@ def predict_image_file():
 
 # Driver code
 if __name__ == "__main__":
-    app.run(port=9000, debug=True)
+    app.run(port=9000, debug=debug_enabled())

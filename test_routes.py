@@ -4,6 +4,8 @@ from io import BytesIO
 
 from PIL import Image
 
+from app import debug_enabled
+
 
 def make_png():
     """Return an in-memory file containing a tiny valid PNG image."""
@@ -81,3 +83,15 @@ def test_upload_without_csrf_token_is_rejected(client):
     )
     assert response.status_code == 400
     assert b"CSRF token is missing" in response.data
+
+
+def test_debug_mode_is_off_by_default(monkeypatch):
+    """Debug mode stays off when FLASK_DEBUG is not set."""
+    monkeypatch.delenv("FLASK_DEBUG", raising=False)
+    assert debug_enabled() is False
+
+
+def test_debug_mode_can_be_turned_on_for_development(monkeypatch):
+    """A developer can still turn debug mode on with FLASK_DEBUG=1."""
+    monkeypatch.setenv("FLASK_DEBUG", "1")
+    assert debug_enabled() is True
